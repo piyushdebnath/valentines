@@ -41,10 +41,6 @@ body {
   margin-bottom: 30px;
 }
 
-.buttons {
-  position: relative;
-}
-
 /* Buttons */
 button {
   padding: 12px 28px;
@@ -58,17 +54,16 @@ button {
 #yesBtn {
   background: #27ae60;
   color: white;
-  margin-right: 10px;
 }
 
-/* NO button is FIXED to viewport */
+/* NO button */
 #noBtn {
   background: #c0392b;
   color: white;
   position: fixed;
-  left: calc(100% - 280px);
+  left: calc(100% - 260px);
   top: 55%;
-  transition: left 0.08s linear, top 0.08s linear;
+  transition: left 0.03s linear, top 0.03s linear;
 }
 
 /* Modal */
@@ -106,9 +101,7 @@ button {
 
 <div class="card">
   <h1>Will you be my Valentine, Pranoti? 💖</h1>
-  <div class="buttons">
-    <button id="yesBtn">Yes 💕</button>
-  </div>
+  <button id="yesBtn">Yes 💕</button>
 </div>
 
 <button id="noBtn">No 😜</button>
@@ -131,8 +124,8 @@ const modal = document.getElementById("modal");
 const music = document.getElementById("music");
 const muteBtn = document.getElementById("muteBtn");
 
-const SAFE_DISTANCE = 25;   // cursor distance
-const DODGE_STEP = 25;     // move amount
+const SAFE_DISTANCE = 20; // cursor distance
+const DODGE_STEP = 12;   // VERY small movement
 
 document.addEventListener("mousemove", (e) => {
   const rect = noBtn.getBoundingClientRect();
@@ -151,15 +144,9 @@ document.addEventListener("mousemove", (e) => {
     let newLeft = rect.left + Math.cos(angle) * DODGE_STEP;
     let newTop  = rect.top  + Math.sin(angle) * DODGE_STEP;
 
-    // HARD CLAMP — cannot escape screen
-    newLeft = Math.max(
-      10,
-      Math.min(newLeft, window.innerWidth - rect.width - 10)
-    );
-    newTop = Math.max(
-      10,
-      Math.min(newTop, window.innerHeight - rect.height - 10)
-    );
+    // HARD bounds
+    newLeft = Math.max(10, Math.min(newLeft, window.innerWidth - rect.width - 10));
+    newTop  = Math.max(10, Math.min(newTop, window.innerHeight - rect.height - 10));
 
     noBtn.style.left = newLeft + "px";
     noBtn.style.top  = newTop  + "px";
