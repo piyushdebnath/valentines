@@ -19,42 +19,43 @@
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background: url("bg.jpg") no-repeat center center/cover;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   font-family: 'Poppins', sans-serif;
   color: #f8fafc;
   overflow: hidden;
+  padding-right: 6%;
 }
 
 /* Card */
 .card {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(14px);
   border-radius: 22px;
   padding: 45px 50px;
   text-align: center;
   box-shadow: 0 30px 70px rgba(0,0,0,0.6);
   max-width: 420px;
-  width: 90%;
+  width: 100%;
 }
 
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 2.3rem;
   margin-bottom: 40px;
-  color: #facc15;
+  color: #fde68a;
 }
 
 /* Buttons */
 .buttons {
   position: relative;
-  height: 140px;
+  height: 120px;
 }
 
 button {
-  padding: 14px 36px;
+  padding: 14px 34px;
   font-size: 1rem;
   border-radius: 40px;
   border: none;
@@ -75,9 +76,10 @@ button {
 
 #noBtn {
   left: 55%;
+  top: 0;
   background: #334155;
   color: white;
-  transition: left 0.25s ease, top 0.25s ease;
+  transition: left 0.15s ease, top 0.15s ease;
 }
 
 /* Modal */
@@ -107,7 +109,7 @@ button {
 .modal-content h2 {
   margin-top: 15px;
   font-family: 'Playfair Display', serif;
-  color: #facc15;
+  color: #fde68a;
 }
 
 .mute-btn {
@@ -123,6 +125,14 @@ button {
 @keyframes pop {
   from { transform: scale(0.85); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  body {
+    justify-content: center;
+    padding-right: 0;
+  }
 }
 </style>
 </head>
@@ -160,34 +170,28 @@ const modal = document.getElementById("modal");
 const music = document.getElementById("music");
 const muteBtn = document.getElementById("muteBtn");
 
-/* Move NO button anywhere inside screen */
-function moveNoButton() {
-  const padding = 20;
-  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-}
-
-/* Dodge cursor */
+/* NO button dodges but stays near cursor */
 document.addEventListener("mousemove", (e) => {
   const rect = noBtn.getBoundingClientRect();
-  const distance = Math.hypot(
-    e.clientX - (rect.left + rect.width / 2),
-    e.clientY - (rect.top + rect.height / 2)
-  );
+  const offset = 90; // distance from cursor
 
-  if (distance < 120) {
-    moveNoButton();
+  if (
+    e.clientX > rect.left - offset &&
+    e.clientX < rect.right + offset &&
+    e.clientY > rect.top - offset &&
+    e.clientY < rect.bottom + offset
+  ) {
+    let x = e.clientX + (Math.random() * 120 - 60);
+    let y = e.clientY + (Math.random() * 120 - 60);
+
+    // Keep inside viewport
+    x = Math.max(20, Math.min(x, window.innerWidth - rect.width - 20));
+    y = Math.max(20, Math.min(y, window.innerHeight - rect.height - 20));
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
   }
 });
-
-/* Also move on hover (backup) */
-noBtn.addEventListener("mouseenter", moveNoButton);
 
 /* YES button */
 yesBtn.addEventListener("click", () => {
@@ -197,7 +201,7 @@ yesBtn.addEventListener("click", () => {
   const end = Date.now() + 2000;
   (function fireworks() {
     confetti({
-      particleCount: 7,
+      particleCount: 6,
       spread: 70,
       origin: { x: Math.random(), y: Math.random() }
     });
