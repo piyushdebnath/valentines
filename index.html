@@ -5,15 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Will You Be My Valentine?</title>
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- Fireworks -->
+<!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
 * {
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -21,147 +22,111 @@ body {
   height: 100vh;
   background: url("bg.jpg") no-repeat center center/cover;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  font-family: 'Poppins', sans-serif;
-  color: #f8fafc;
+  align-items: center;
+  padding-right: 80px;
   overflow: hidden;
-  padding-right: 6%;
 }
 
 /* Card */
 .card {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(14px);
-  border-radius: 22px;
-  padding: 45px 50px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 40px;
+  width: 360px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   text-align: center;
-  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
-  max-width: 420px;
-  width: 100%;
 }
 
-h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.3rem;
-  margin-bottom: 40px;
-  color: #fde68a;
+/* Question */
+.card h1 {
+  font-size: 26px;
+  color: #2c3e50;
+  margin-bottom: 30px;
 }
 
 /* Buttons */
 .buttons {
   position: relative;
-  height: 120px;
+  height: 100px;
 }
 
 button {
-  padding: 14px 34px;
-  font-size: 1rem;
-  border-radius: 40px;
+  padding: 12px 28px;
+  font-size: 16px;
+  border-radius: 30px;
   border: none;
   cursor: pointer;
-  position: absolute;
-}
-
-#yesBtn {
-  left: 0;
-  background: linear-gradient(135deg, #facc15, #fde047);
-  color: #1e293b;
   font-weight: 600;
 }
 
-#yesBtn:hover {
-  transform: scale(1.08);
+#yesBtn {
+  background: #2ecc71;
+  color: white;
 }
 
 #noBtn {
-  left: 55%;
-  top: 0;
-  background: #334155;
+  background: #e74c3c;
   color: white;
-  transition: left 0.15s ease, top 0.15s ease;
+  position: absolute;
+  left: 180px;
+  top: 0;
 }
 
 /* Modal */
 .modal {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.75);
-  align-items: center;
+  background: rgba(0,0,0,0.6);
+  display: none;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
   z-index: 10;
 }
 
-.modal-content {
-  background: #020617;
-  padding: 25px;
-  border-radius: 18px;
-  text-align: center;
-  animation: pop 0.3s ease;
+.modal img {
+  max-width: 300px;
+  border-radius: 16px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
 }
 
-.modal-content img {
-  width: 280px;
-  border-radius: 14px;
+.modal h2 {
+  color: white;
+  margin-top: 20px;
 }
 
-.modal-content h2 {
+/* Mute button */
+#muteBtn {
   margin-top: 15px;
-  font-family: 'Playfair Display', serif;
-  color: #fde68a;
-}
-
-.mute-btn {
-  margin-top: 10px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  background: #facc15;
-  color: #020617;
-}
-
-@keyframes pop {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  body {
-    justify-content: center;
-    padding-right: 0;
-  }
+  background: #34495e;
+  color: white;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Music -->
-<audio id="music" loop>
-  <source src="kal.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Card -->
 <div class="card">
-  <h1>Will you be my Valentine,<br>Pranoti?</h1>
+  <h1>Will you be my Valentine, Pranoti? 💖</h1>
 
   <div class="buttons">
-    <button id="yesBtn">Yes ❤️</button>
-    <button id="noBtn">No</button>
+    <button id="yesBtn">Yes 💕</button>
+    <button id="noBtn">No 😜</button>
   </div>
 </div>
 
 <!-- Modal -->
 <div class="modal" id="modal">
-  <div class="modal-content">
-    <img src="love.jpg" alt="Love">
-    <h2>You made me very happy 💛</h2>
-    <button class="mute-btn" id="muteBtn">Mute Music 🔊</button>
-  </div>
+  <img src="love.jpg" alt="Love">
+  <h2>You made me the happiest 💘</h2>
+  <button id="muteBtn">Mute 🔊</button>
 </div>
+
+<!-- Music -->
+<audio id="music" loop>
+  <source src="kal.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const noBtn = document.getElementById("noBtn");
@@ -170,54 +135,54 @@ const modal = document.getElementById("modal");
 const music = document.getElementById("music");
 const muteBtn = document.getElementById("muteBtn");
 
-/* NO button dodges but stays near cursor */
+const SAFE_DISTANCE = 25;
+const MOVE_DISTANCE = 40;
+
 document.addEventListener("mousemove", (e) => {
   const rect = noBtn.getBoundingClientRect();
-  const offset = 90; // distance from cursor
 
-  if (
-    e.clientX > rect.left - offset &&
-    e.clientX < rect.right + offset &&
-    e.clientY > rect.top - offset &&
-    e.clientY < rect.bottom + offset
-  ) {
-    let x = e.clientX + (Math.random() * 120 - 60);
-    let y = e.clientY + (Math.random() * 120 - 60);
+  const btnX = rect.left + rect.width / 2;
+  const btnY = rect.top + rect.height / 2;
 
-    // Keep inside viewport
-    x = Math.max(20, Math.min(x, window.innerWidth - rect.width - 20));
-    y = Math.max(20, Math.min(y, window.innerHeight - rect.height - 20));
+  const dx = btnX - e.clientX;
+  const dy = btnY - e.clientY;
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  if (distance < SAFE_DISTANCE) {
+    const angle = Math.atan2(dy, dx);
+
+    let newX = btnX + Math.cos(angle) * MOVE_DISTANCE;
+    let newY = btnY + Math.sin(angle) * MOVE_DISTANCE;
+
+    newX = Math.max(20, Math.min(newX, window.innerWidth - rect.width - 20));
+    newY = Math.max(20, Math.min(newY, window.innerHeight - rect.height - 20));
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
   }
 });
 
-/* YES button */
+/* YES CLICK */
 yesBtn.addEventListener("click", () => {
   modal.style.display = "flex";
   music.play();
 
-  const end = Date.now() + 2000;
+  const end = Date.now() + 2500;
   (function fireworks() {
     confetti({
-      particleCount: 6,
-      spread: 70,
+      particleCount: 7,
+      spread: 80,
       origin: { x: Math.random(), y: Math.random() }
     });
     if (Date.now() < end) requestAnimationFrame(fireworks);
   })();
 });
 
-/* Mute toggle */
+/* Mute */
 muteBtn.addEventListener("click", () => {
   music.muted = !music.muted;
   muteBtn.textContent = music.muted ? "Unmute 🔇" : "Mute 🔊";
-});
-
-/* Close modal */
-modal.addEventListener("click", e => {
-  if (e.target === modal) modal.style.display = "none";
 });
 </script>
 
